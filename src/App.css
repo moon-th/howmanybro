@@ -1039,6 +1039,37 @@
   background: #ffd330;
 }
 
+.in-app-browser-panel {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 260px);
+  border: 2px solid rgba(23, 21, 19, 0.5);
+  border-radius: 4px;
+  background: rgba(255, 253, 248, 0.88);
+  color: #16120f;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 3px 4px 0 rgba(23, 21, 19, 0.12);
+}
+
+.in-app-browser-panel strong {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.in-app-browser-panel span {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.in-app-browser-panel em {
+  color: #2463b6;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .download-fallback-panel {
   display: grid;
   gap: 8px;

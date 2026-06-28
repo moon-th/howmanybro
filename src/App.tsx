@@ -2038,6 +2038,79 @@ async function shareImageFile(blob: Blob, fileName: string) {
   }
 }
 
+function getCurrentPageUrl() {
+  if (typeof window === 'undefined') {
+    return ''
+  }
+
+  return window.location.href
+}
+
+function isKakaoInAppBrowser() {
+  if (typeof navigator === 'undefined') {
+    return false
+  }
+
+  return /KAKAOTALK/i.test(navigator.userAgent)
+}
+
+function isAndroidDevice() {
+  if (typeof navigator === 'undefined') {
+    return false
+  }
+
+  return /Android/i.test(navigator.userAgent)
+}
+
+function getExternalBrowserUrl() {
+  const currentUrl = getCurrentPageUrl()
+
+  if (!currentUrl || !isAndroidDevice()) {
+    return currentUrl
+  }
+
+  try {
+    const url = new URL(currentUrl)
+    const intentTarget = `${url.host}${url.pathname}${url.search}`
+    const scheme = url.protocol.replace(':', '')
+
+    return `intent://${intentTarget}#Intent;scheme=${scheme};package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(currentUrl)};end`
+  } catch {
+    return currentUrl
+  }
+}
+
+async function copyTextToClipboard(text: string) {
+  if (!text) {
+    return false
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text)
+      return true
+    } catch {
+      // Fall through to the legacy copy path for in-app browsers.
+    }
+  }
+
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  textArea.setAttribute('readonly', '')
+  textArea.style.position = 'fixed'
+  textArea.style.opacity = '0'
+  document.body.appendChild(textArea)
+  textArea.select()
+
+  try {
+    return document.execCommand('copy')
+  } catch {
+    return false
+  } finally {
+    textArea.remove()
+  }
+}
+
 function createPngBlob(canvas: HTMLCanvasElement) {
   return new Promise<Blob | null>((resolve) => {
     canvas.toBlob((blob) => resolve(blob), 'image/png')
@@ -2218,10 +2291,14 @@ function App() {
   const [downloadState, setDownloadState] = useState<DownloadState | null>(null)
   const [liveStats, setLiveStats] = useState<LiveStats>(FALLBACK_LIVE_STATS)
   const [pendingAdAction, setPendingAdAction] = useState<PendingAdAction | null>(null)
+  const [copyNotice, setCopyNotice] = useState('')
 
   const isResult = result !== null
   const topLossItem = liveStats.rankings.loss[0] ?? FALLBACK_LIVE_STATS.rankings.loss[0]
   const topProfitItem = liveStats.rankings.profit[0] ?? FALLBACK_LIVE_STATS.rankings.profit[0]
+  const isKakaoBrowser = useMemo(isKakaoInAppBrowser, [])
+  const isAndroidBrowser = useMemo(isAndroidDevice, [])
+  const externalBrowserUrl = useMemo(getExternalBrowserUrl, [])
 
   const resultLabelLines = useMemo(
     () => (result ? getResultLabelLines(result.item.label) : []),
@@ -2463,6 +2540,10 @@ function App() {
       return
     }
 
+    if (isKakaoBrowser) {
+      return
+    }
+
     const didShare = await shareImageFile(downloadState.blob, downloadState.fileName)
 
     if (didShare) {
@@ -2473,6 +2554,11 @@ function App() {
     window.setTimeout(() => {
       window.location.href = downloadState.dataUrl
     }, 300)
+  }
+
+  async function copyExternalBrowserUrl() {
+    const copied = await copyTextToClipboard(getCurrentPageUrl())
+    setCopyNotice(copied ? '주소를 복사했어요.' : '주소 복사가 막혔어요. 오른쪽 위 메뉴를 눌러 외부 브라우저로 열어주세요.')
   }
 
   const adBreakOverlay = pendingAdAction ? (
@@ -2519,7 +2605,7 @@ function App() {
           <button type="button" onClick={handleDownloadResult}>
             {downloadState ? '이미지 다시 만들기' : '이미지 다운로드'}
           </button>
-          {downloadState ? (
+          {downloadState && !isKakaoBrowser ? (
             <button type="button" className="download-primary-action" onClick={handleSaveGeneratedImage}>
               공유/저장하기
             </button>
@@ -2530,6 +2616,25 @@ function App() {
           <button type="button" onClick={resetResult}>
             다른 금액 입력
           </button>
+          {isKakaoBrowser ? (
+            <div className="in-app-browser-panel" role="status">
+              <strong>카톡 브라우저에서는 저장이 막힐 수 있어요.</strong>
+              <span>
+                오른쪽 위 메뉴에서 외부 브라우저로 열거나 Chrome/Safari에서 다시 생성하면 저장이
+                됩니다.
+              </span>
+              {isAndroidBrowser ? (
+                <a className="download-fallback-link download-direct-link" href={externalBrowserUrl}>
+                  Chrome으로 열기
+                </a>
+              ) : (
+                <button type="button" className="download-primary-action" onClick={copyExternalBrowserUrl}>
+                  링크 복사
+                </button>
+              )}
+              {copyNotice ? <em>{copyNotice}</em> : null}
+            </div>
+          ) : null}
           {downloadState ? (
             <div className="download-fallback-panel">
               <img src={downloadState.url} alt="저장할 결과 이미지 미리보기" />
