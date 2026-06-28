@@ -2067,7 +2067,10 @@ function isIosDevice() {
     return false
   }
 
-  return /iPad|iPhone|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const userAgent = navigator.userAgent
+  const isAppleTouchDevice = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
+
+  return !/Android/i.test(userAgent) && (/iPad|iPhone|iPod|CriOS|FxiOS|EdgiOS/i.test(userAgent) || isAppleTouchDevice)
 }
 
 function getExternalBrowserUrl() {

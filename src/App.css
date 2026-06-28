@@ -1391,7 +1391,20 @@ a:focus-visible {
   }
 
   .result-actions button {
+    width: 100%;
     min-height: 40px;
     font-size: 13px;
+  }
+
+  .result-actions {
+    display: grid;
+    width: min(100%, 320px);
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+  }
+
+  .download-fallback-panel,
+  .in-app-browser-panel {
+    width: 100%;
   }
 }
