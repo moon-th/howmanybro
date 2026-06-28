@@ -1580,6 +1580,7 @@ type PendingAdAction =
 
 type DownloadState = {
   blob: Blob
+  dataUrl: string
   fileName: string
   url: string
 }
@@ -2447,12 +2448,13 @@ function App() {
     }
 
     const url = URL.createObjectURL(blob)
+    const dataUrl = canvas.toDataURL('image/png')
 
     if (downloadState) {
       URL.revokeObjectURL(downloadState.url)
     }
 
-    setDownloadState({ blob, fileName, url })
+    setDownloadState({ blob, dataUrl, fileName, url })
   }
 
   async function handleSaveGeneratedImage() {
@@ -2468,6 +2470,9 @@ function App() {
     }
 
     downloadBlob(downloadState.blob, downloadState.fileName)
+    window.setTimeout(() => {
+      window.location.href = downloadState.dataUrl
+    }, 300)
   }
 
   const adBreakOverlay = pendingAdAction ? (
@@ -2531,17 +2536,15 @@ function App() {
               <a
                 className="download-fallback-link download-direct-link"
                 download={downloadState.fileName}
-                href={downloadState.url}
+                href={downloadState.dataUrl}
               >
                 다운로드 저장
               </a>
               <a
                 className="download-fallback-link"
-                href={downloadState.url}
-                target="_blank"
-                rel="noopener"
+                href={downloadState.dataUrl}
               >
-                이미지 보기
+                이미지 화면으로 열기
               </a>
             </div>
           ) : null}
