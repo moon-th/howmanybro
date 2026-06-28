@@ -555,8 +555,8 @@
 }
 
 .rare-card img {
-  width: 168px;
-  height: 146px;
+  width: 178px;
+  height: 166px;
   object-fit: contain;
   image-rendering: pixelated;
   filter: drop-shadow(5px 6px 0 rgba(0, 0, 0, 0.14));
