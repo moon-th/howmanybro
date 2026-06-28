@@ -1579,6 +1579,7 @@ type PendingAdAction =
     }
 
 type DownloadState = {
+  blob: Blob
   fileName: string
   url: string
 }
@@ -2451,14 +2452,22 @@ function App() {
       URL.revokeObjectURL(downloadState.url)
     }
 
-    setDownloadState({ fileName, url })
-    const didShare = await shareImageFile(blob, fileName)
+    setDownloadState({ blob, fileName, url })
+  }
+
+  async function handleSaveGeneratedImage() {
+    if (!downloadState) {
+      await handleDownloadResult()
+      return
+    }
+
+    const didShare = await shareImageFile(downloadState.blob, downloadState.fileName)
 
     if (didShare) {
       return
     }
 
-    downloadBlob(blob, fileName)
+    downloadBlob(downloadState.blob, downloadState.fileName)
   }
 
   const adBreakOverlay = pendingAdAction ? (
@@ -2503,8 +2512,13 @@ function App() {
 
         <div className="result-actions">
           <button type="button" onClick={handleDownloadResult}>
-            이미지 다운로드
+            {downloadState ? '이미지 다시 만들기' : '이미지 다운로드'}
           </button>
+          {downloadState ? (
+            <button type="button" className="download-primary-action" onClick={handleSaveGeneratedImage}>
+              공유/저장하기
+            </button>
+          ) : null}
           <button type="button" onClick={rerollResult}>
             이미지 다시 뽑기
           </button>
@@ -2512,15 +2526,18 @@ function App() {
             다른 금액 입력
           </button>
           {downloadState ? (
-            <a
-              className="download-fallback-link"
-              download={downloadState.fileName}
-              href={downloadState.url}
-              target="_blank"
-              rel="noopener"
-            >
-              이미지 열어서 저장하기
-            </a>
+            <div className="download-fallback-panel">
+              <img src={downloadState.url} alt="저장할 결과 이미지 미리보기" />
+              <a
+                className="download-fallback-link"
+                download={downloadState.fileName}
+                href={downloadState.url}
+                target="_blank"
+                rel="noopener"
+              >
+                새 탭으로 열기
+              </a>
+            </div>
           ) : null}
         </div>
         {adBreakOverlay}
