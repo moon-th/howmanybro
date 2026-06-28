@@ -315,36 +315,42 @@
   text-align: center;
 }
 
-.amount-tone-toggle {
+.amount-submit-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
-.amount-tone-toggle button {
-  min-height: 54px;
+.amount-submit-actions button {
+  min-height: 58px;
   border: 2px solid #15120f;
   border-radius: 8px;
-  background: #fffdf8;
-  color: #15120f;
+  color: #fffdf8;
   cursor: pointer;
   font: inherit;
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(17px, 2vw, 23px);
   font-weight: 900;
-  box-shadow: 3px 4px 0 rgba(23, 21, 19, 0.12);
+  box-shadow: 4px 5px 0 rgba(23, 21, 19, 0.16);
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
-.amount-tone-toggle button.active {
-  color: #fffdf8;
+.amount-submit-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 7px 0 rgba(23, 21, 19, 0.16);
+}
+
+.amount-submit-actions button:active {
   transform: translateY(2px);
   box-shadow: 1px 2px 0 rgba(23, 21, 19, 0.18);
 }
 
-.amount-tone-toggle button.loss.active {
+.amount-submit-actions button[value='loss'] {
   background: #2463b6;
 }
 
-.amount-tone-toggle button.profit.active {
+.amount-submit-actions button[value='profit'] {
   background: #c73933;
 }
 
@@ -411,48 +417,6 @@
   font-weight: 900;
   padding: 15px 18px;
   text-align: center;
-}
-
-.convert-card button {
-  position: relative;
-  justify-self: center;
-  width: min(100%, 480px);
-  min-height: 92px;
-  border: 4px solid #16100f;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #e34b48 0%, #c8312e 100%);
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-  font-size: clamp(34px, 4vw, 48px);
-  font-weight: 900;
-  box-shadow:
-    inset -7px -8px 0 rgba(108, 25, 25, 0.32),
-    0 8px 0 #5d1817;
-  transition:
-    transform 150ms ease,
-    box-shadow 150ms ease;
-}
-
-.convert-card button:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    inset -7px -8px 0 rgba(108, 25, 25, 0.32),
-    0 10px 0 #5d1817;
-}
-
-.cursor-hand {
-  position: absolute;
-  right: 32px;
-  bottom: -18px;
-  color: #fff;
-  font-size: 46px;
-  text-shadow:
-    3px 0 #111,
-    -3px 0 #111,
-    0 3px #111,
-    0 -3px #111;
-  transform: rotate(-18deg);
 }
 
 .privacy-note {
@@ -1337,13 +1301,8 @@ a:focus-visible {
     padding-left: 16px;
   }
 
-  .convert-card button {
-    min-height: 76px;
-  }
-
-  .cursor-hand {
-    right: 20px;
-    font-size: 34px;
+  .amount-submit-actions button {
+    min-height: 54px;
   }
 
   .mini-ant-row {

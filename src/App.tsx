@@ -2286,7 +2286,6 @@ function AdBreakOverlay({
 
 function App() {
   const [amount, setAmount] = useState('')
-  const [amountTone, setAmountTone] = useState<'loss' | 'profit'>('loss')
   const [amountError, setAmountError] = useState('')
   const [result, setResult] = useState<ResultState | null>(null)
   const [downloadState, setDownloadState] = useState<DownloadState | null>(null)
@@ -2381,13 +2380,16 @@ function App() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const parsedAmount = parseAmountInput(amount)
+    const submitter = (event.nativeEvent as SubmitEvent).submitter
+    const submitTone =
+      submitter instanceof HTMLButtonElement && submitter.value === 'profit' ? 'profit' : 'loss'
 
     if (parsedAmount === null) {
       setAmountError('0원이 아닌 손실 또는 수익 금액을 입력해주세요.')
       return
     }
 
-    const signedAmount = amountTone === 'loss' ? -Math.abs(parsedAmount) : Math.abs(parsedAmount)
+    const signedAmount = submitTone === 'loss' ? -Math.abs(parsedAmount) : Math.abs(parsedAmount)
 
     setAmountError('')
     setPendingAdAction({ amount: signedAmount, kind: 'submit' })
@@ -2739,26 +2741,8 @@ function App() {
 
           <form className="convert-card" onSubmit={handleSubmit}>
             <label htmlFor="amount">
-              금액 종류를 고르고 숫자만 입력하세요
+              금액만 입력하고 변환할 종류를 눌러주세요
             </label>
-            <div className="amount-tone-toggle" role="group" aria-label="금액 종류">
-              <button
-                type="button"
-                className={amountTone === 'loss' ? 'active loss' : 'loss'}
-                aria-pressed={amountTone === 'loss'}
-                onClick={() => setAmountTone('loss')}
-              >
-                손실
-              </button>
-              <button
-                type="button"
-                className={amountTone === 'profit' ? 'active profit' : 'profit'}
-                aria-pressed={amountTone === 'profit'}
-                onClick={() => setAmountTone('profit')}
-              >
-                수익
-              </button>
-            </div>
             <div className="amount-row">
               <input
                 id="amount"
@@ -2767,12 +2751,6 @@ function App() {
                 value={amount}
                 onChange={(event) => {
                   const nextValue = event.target.value.trim()
-
-                  if (nextValue.startsWith('-')) {
-                    setAmountTone('loss')
-                  } else if (nextValue.startsWith('+')) {
-                    setAmountTone('profit')
-                  }
 
                   setAmount(formatAmountInput(nextValue).replace(/^[+-]/, ''))
                   if (amountError) {
@@ -2785,16 +2763,21 @@ function App() {
               />
               <span>원</span>
             </div>
-            <p id="amountHelp">예) 손실 선택 후 3,200,000 또는 수익 선택 후 5,700,000</p>
+            <p id="amountHelp">예) 3,200,000 입력 후 손실로 변환 또는 수익으로 변환</p>
             {amountError ? (
               <p id="amountError" className="amount-error" role="alert">
                 {amountError}
               </p>
             ) : null}
-            <div className="guide-strip">💡 마이너스 입력 없이 손실/수익 버튼으로 선택해요!</div>
-            <button type="submit">
-              변환하기
-            </button>
+            <div className="guide-strip">💡 마이너스 입력 없이 아래 버튼으로 바로 변환해요!</div>
+            <div className="amount-submit-actions">
+              <button type="submit" name="tone" value="loss">
+                손실로 변환
+              </button>
+              <button type="submit" name="tone" value="profit">
+                수익으로 변환
+              </button>
+            </div>
             <p className="privacy-note">🔒 개인 정보 없이 통계만 반영돼요!</p>
           </form>
 
