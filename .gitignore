@@ -29,3 +29,4 @@ src/assets/generated/result-assets/_qa/
 *.njsproj
 *.sln
 *.sw?
+.vercel
