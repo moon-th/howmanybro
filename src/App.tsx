@@ -1604,6 +1604,10 @@ type AdSenseWindow = Window & {
   adsbygoogle?: unknown[]
 }
 
+type ShareNavigator = Navigator & {
+  canShare?: (data: ShareData) => boolean
+}
+
 type Tone = 'loss' | 'profit'
 
 type LiveRankItem = {
@@ -2000,6 +2004,36 @@ function downloadBlob(blob: Blob, fileName: string) {
   link.click()
   link.remove()
   window.setTimeout(() => URL.revokeObjectURL(url), 60000)
+}
+
+async function shareImageFile(blob: Blob, fileName: string) {
+  const shareNavigator = navigator as ShareNavigator
+
+  if (!navigator.share) {
+    return false
+  }
+
+  const file = new File([blob], fileName, { type: 'image/png' })
+  const shareData: ShareData = {
+    files: [file],
+    title: 'How Many Bro 결과 이미지',
+  }
+
+  if (shareNavigator.canShare && !shareNavigator.canShare(shareData)) {
+    return false
+  }
+
+  try {
+    await navigator.share(shareData)
+    return true
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return true
+    }
+
+    console.warn('Failed to share image file', error)
+    return false
+  }
 }
 
 function createPngBlob(canvas: HTMLCanvasElement) {
@@ -2418,6 +2452,12 @@ function App() {
     }
 
     setDownloadState({ fileName, url })
+    const didShare = await shareImageFile(blob, fileName)
+
+    if (didShare) {
+      return
+    }
+
     downloadBlob(blob, fileName)
   }
 
@@ -2472,7 +2512,13 @@ function App() {
             다른 금액 입력
           </button>
           {downloadState ? (
-            <a className="download-fallback-link" href={downloadState.url} target="_blank" rel="noopener">
+            <a
+              className="download-fallback-link"
+              download={downloadState.fileName}
+              href={downloadState.url}
+              target="_blank"
+              rel="noopener"
+            >
               이미지 열어서 저장하기
             </a>
           ) : null}
