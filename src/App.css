@@ -1157,6 +1157,15 @@
   box-shadow: 3px 4px 0 rgba(23, 21, 19, 0.12);
 }
 
+.ios-save-hint {
+  margin: 0;
+  color: #2463b6;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: center;
+}
+
 .download-fallback-link {
   display: inline-grid;
   align-items: center;

@@ -2062,6 +2062,14 @@ function isAndroidDevice() {
   return /Android/i.test(navigator.userAgent)
 }
 
+function isIosDevice() {
+  if (typeof navigator === 'undefined') {
+    return false
+  }
+
+  return /iPad|iPhone|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
 function getExternalBrowserUrl() {
   const currentUrl = getCurrentPageUrl()
 
@@ -2299,6 +2307,7 @@ function App() {
   const topProfitItem = liveStats.rankings.profit[0] ?? FALLBACK_LIVE_STATS.rankings.profit[0]
   const isKakaoBrowser = useMemo(isKakaoInAppBrowser, [])
   const isAndroidBrowser = useMemo(isAndroidDevice, [])
+  const isIosBrowser = useMemo(isIosDevice, [])
   const externalBrowserUrl = useMemo(getExternalBrowserUrl, [])
 
   const resultLabelLines = useMemo(
@@ -2572,10 +2581,12 @@ function App() {
       return
     }
 
+    if (isIosBrowser) {
+      window.open(downloadState.url, '_blank', 'noopener')
+      return
+    }
+
     downloadBlob(downloadState.blob, downloadState.fileName)
-    window.setTimeout(() => {
-      window.location.href = downloadState.dataUrl
-    }, 300)
   }
 
   async function copyExternalBrowserUrl() {
@@ -2659,7 +2670,7 @@ function App() {
           </button>
           {downloadState && !isKakaoBrowser ? (
             <button type="button" className="download-primary-action" onClick={handleSaveGeneratedImage}>
-              공유/저장하기
+              {isIosBrowser ? '공유로 사진 저장' : '공유/저장하기'}
             </button>
           ) : null}
           <button type="button" onClick={rerollResult}>
@@ -2690,16 +2701,22 @@ function App() {
           {downloadState ? (
             <div className="download-fallback-panel">
               <img src={downloadState.url} alt="저장할 결과 이미지 미리보기" />
-              <a
-                className="download-fallback-link download-direct-link"
-                download={downloadState.fileName}
-                href={downloadState.dataUrl}
-              >
-                다운로드 저장
-              </a>
+              {isIosBrowser ? (
+                <p className="ios-save-hint">사진 앱에 저장하려면 공유로 사진 저장을 누르거나 이미지를 길게 눌러 저장하세요.</p>
+              ) : (
+                <a
+                  className="download-fallback-link download-direct-link"
+                  download={downloadState.fileName}
+                  href={downloadState.dataUrl}
+                >
+                  다운로드 저장
+                </a>
+              )}
               <a
                 className="download-fallback-link"
-                href={downloadState.dataUrl}
+                href={isIosBrowser ? downloadState.url : downloadState.dataUrl}
+                target={isIosBrowser ? '_blank' : undefined}
+                rel={isIosBrowser ? 'noopener' : undefined}
               >
                 이미지 화면으로 열기
               </a>
