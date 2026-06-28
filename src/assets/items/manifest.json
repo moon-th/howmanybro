@@ -1,0 +1,486 @@
+{
+  "generatedFrom": "new AI-generated sprite sheets, not cropped from reference image",
+  "assetStyle": "text-free pixel art PNG with transparent background",
+  "categories": [
+    {
+      "folder": "under_10k",
+      "name": "1만원 이하",
+      "items": [
+        {
+          "slug": "ramen",
+          "name": "라면",
+          "file": "src/assets/items/under_10k/ramen.png"
+        },
+        {
+          "slug": "egg",
+          "name": "계란",
+          "file": "src/assets/items/under_10k/egg.png"
+        },
+        {
+          "slug": "iced_americano",
+          "name": "아이스 아메리카노",
+          "file": "src/assets/items/under_10k/iced_americano.png"
+        },
+        {
+          "slug": "triangle_gimbap",
+          "name": "삼각김밥",
+          "file": "src/assets/items/under_10k/triangle_gimbap.png"
+        },
+        {
+          "slug": "gimbap",
+          "name": "김밥",
+          "file": "src/assets/items/under_10k/gimbap.png"
+        },
+        {
+          "slug": "hamburger",
+          "name": "햄버거",
+          "file": "src/assets/items/under_10k/hamburger.png"
+        },
+        {
+          "slug": "potato",
+          "name": "감자",
+          "file": "src/assets/items/under_10k/potato.png"
+        },
+        {
+          "slug": "tomato",
+          "name": "토마토",
+          "file": "src/assets/items/under_10k/tomato.png"
+        },
+        {
+          "slug": "panties",
+          "name": "팬티",
+          "file": "src/assets/items/under_10k/panties.png"
+        },
+        {
+          "slug": "socks",
+          "name": "양말",
+          "file": "src/assets/items/under_10k/socks.png"
+        },
+        {
+          "slug": "toilet_paper",
+          "name": "휴지",
+          "file": "src/assets/items/under_10k/toilet_paper.png"
+        },
+        {
+          "slug": "water",
+          "name": "생수",
+          "file": "src/assets/items/under_10k/water.png"
+        },
+        {
+          "slug": "choco_pie",
+          "name": "초코파이",
+          "file": "src/assets/items/under_10k/choco_pie.png"
+        },
+        {
+          "slug": "fish_bread",
+          "name": "붕어빵",
+          "file": "src/assets/items/under_10k/fish_bread.png"
+        },
+        {
+          "slug": "gukbap",
+          "name": "국밥",
+          "file": "src/assets/items/under_10k/gukbap.png"
+        },
+        {
+          "slug": "chicken_piece",
+          "name": "치킨 한 조각",
+          "file": "src/assets/items/under_10k/chicken_piece.png"
+        },
+        {
+          "slug": "kanu_stick",
+          "name": "카누 한 스틱",
+          "file": "src/assets/items/under_10k/kanu_stick.png"
+        },
+        {
+          "slug": "daiso_shopping",
+          "name": "다이소 쇼핑",
+          "file": "src/assets/items/under_10k/daiso_shopping.png"
+        },
+        {
+          "slug": "lotto_ticket",
+          "name": "로또 한 장",
+          "file": "src/assets/items/under_10k/lotto_ticket.png"
+        },
+        {
+          "slug": "scratch_lottery",
+          "name": "복권",
+          "file": "src/assets/items/under_10k/scratch_lottery.png"
+        },
+        {
+          "slug": "churu",
+          "name": "츄르",
+          "file": "src/assets/items/under_10k/churu.png"
+        },
+        {
+          "slug": "toy_ball",
+          "name": "장난감 공",
+          "file": "src/assets/items/under_10k/toy_ball.png"
+        },
+        {
+          "slug": "dog_chew",
+          "name": "개껌",
+          "file": "src/assets/items/under_10k/dog_chew.png"
+        },
+        {
+          "slug": "gim",
+          "name": "김",
+          "file": "src/assets/items/under_10k/gim.png"
+        },
+        {
+          "slug": "choco_milk",
+          "name": "초코우유",
+          "file": "src/assets/items/under_10k/choco_milk.png"
+        }
+      ]
+    },
+    {
+      "folder": "10k_100k",
+      "name": "1만원-10만원",
+      "items": [
+        {
+          "slug": "chicken",
+          "name": "치킨",
+          "file": "src/assets/items/10k_100k/chicken.png"
+        },
+        {
+          "slug": "pizza",
+          "name": "피자",
+          "file": "src/assets/items/10k_100k/pizza.png"
+        },
+        {
+          "slug": "hanwoo_1kg",
+          "name": "한우 1kg",
+          "file": "src/assets/items/10k_100k/hanwoo_1kg.png"
+        },
+        {
+          "slug": "meat_buffet",
+          "name": "고기 무한리필",
+          "file": "src/assets/items/10k_100k/meat_buffet.png"
+        },
+        {
+          "slug": "sneakers",
+          "name": "운동화",
+          "file": "src/assets/items/10k_100k/sneakers.png"
+        },
+        {
+          "slug": "perfume",
+          "name": "향수",
+          "file": "src/assets/items/10k_100k/perfume.png"
+        },
+        {
+          "slug": "airpods",
+          "name": "에어팟",
+          "file": "src/assets/items/10k_100k/airpods.png"
+        },
+        {
+          "slug": "game_title",
+          "name": "게임 타이틀",
+          "file": "src/assets/items/10k_100k/game_title.png"
+        },
+        {
+          "slug": "movie_ticket",
+          "name": "영화관람권",
+          "file": "src/assets/items/10k_100k/movie_ticket.png"
+        },
+        {
+          "slug": "hotel_1night",
+          "name": "호텔 1박",
+          "file": "src/assets/items/10k_100k/hotel_1night.png"
+        },
+        {
+          "slug": "steam_game",
+          "name": "스팀게임",
+          "file": "src/assets/items/10k_100k/steam_game.png"
+        },
+        {
+          "slug": "sashimi_plate",
+          "name": "회 한접시",
+          "file": "src/assets/items/10k_100k/sashimi_plate.png"
+        },
+        {
+          "slug": "cake",
+          "name": "케이크",
+          "file": "src/assets/items/10k_100k/cake.png"
+        },
+        {
+          "slug": "convenience_lunchbox",
+          "name": "편의점 도시락",
+          "file": "src/assets/items/10k_100k/convenience_lunchbox.png"
+        },
+        {
+          "slug": "pc_bang_1h",
+          "name": "PC방 1시간",
+          "file": "src/assets/items/10k_100k/pc_bang_1h.png"
+        },
+        {
+          "slug": "tanghulu",
+          "name": "탕후루",
+          "file": "src/assets/items/10k_100k/tanghulu.png"
+        },
+        {
+          "slug": "soju",
+          "name": "소주",
+          "file": "src/assets/items/10k_100k/soju.png"
+        },
+        {
+          "slug": "beer",
+          "name": "맥주",
+          "file": "src/assets/items/10k_100k/beer.png"
+        },
+        {
+          "slug": "pet_food",
+          "name": "사료",
+          "file": "src/assets/items/10k_100k/pet_food.png"
+        },
+        {
+          "slug": "water_bowl",
+          "name": "물그릇",
+          "file": "src/assets/items/10k_100k/water_bowl.png"
+        },
+        {
+          "slug": "cat_litter",
+          "name": "고양이 모래",
+          "file": "src/assets/items/10k_100k/cat_litter.png"
+        },
+        {
+          "slug": "tteokbokki",
+          "name": "떡볶이",
+          "file": "src/assets/items/10k_100k/tteokbokki.png"
+        },
+        {
+          "slug": "baemin_min_order",
+          "name": "배민 최소주문",
+          "file": "src/assets/items/10k_100k/baemin_min_order.png"
+        }
+      ]
+    },
+    {
+      "folder": "100k_1m",
+      "name": "10만원-100만원",
+      "items": [
+        {
+          "slug": "iphone",
+          "name": "아이폰",
+          "file": "src/assets/items/100k_1m/iphone.png"
+        },
+        {
+          "slug": "galaxy",
+          "name": "갤럭시",
+          "file": "src/assets/items/100k_1m/galaxy.png"
+        },
+        {
+          "slug": "apple_watch",
+          "name": "애플워치",
+          "file": "src/assets/items/100k_1m/apple_watch.png"
+        },
+        {
+          "slug": "ipad",
+          "name": "아이패드",
+          "file": "src/assets/items/100k_1m/ipad.png"
+        },
+        {
+          "slug": "macbook",
+          "name": "맥북",
+          "file": "src/assets/items/100k_1m/macbook.png"
+        },
+        {
+          "slug": "luxury_wallet",
+          "name": "명품지갑",
+          "file": "src/assets/items/100k_1m/luxury_wallet.png"
+        },
+        {
+          "slug": "van_cleef_necklace",
+          "name": "반클리프 목걸이",
+          "file": "src/assets/items/100k_1m/van_cleef_necklace.png"
+        },
+        {
+          "slug": "chanel_bag",
+          "name": "샤넬백",
+          "file": "src/assets/items/100k_1m/chanel_bag.png"
+        },
+        {
+          "slug": "dad_suit",
+          "name": "아빠 정장",
+          "file": "src/assets/items/100k_1m/dad_suit.png"
+        },
+        {
+          "slug": "robot_vacuum",
+          "name": "로봇청소기",
+          "file": "src/assets/items/100k_1m/robot_vacuum.png"
+        },
+        {
+          "slug": "tv",
+          "name": "TV",
+          "file": "src/assets/items/100k_1m/tv.png"
+        },
+        {
+          "slug": "washing_machine",
+          "name": "세탁기",
+          "file": "src/assets/items/100k_1m/washing_machine.png"
+        },
+        {
+          "slug": "wet_dry_vacuum",
+          "name": "건습식청소기",
+          "file": "src/assets/items/100k_1m/wet_dry_vacuum.png"
+        },
+        {
+          "slug": "air_purifier",
+          "name": "공기청정기",
+          "file": "src/assets/items/100k_1m/air_purifier.png"
+        },
+        {
+          "slug": "massage_chair",
+          "name": "안마의자",
+          "file": "src/assets/items/100k_1m/massage_chair.png"
+        },
+        {
+          "slug": "hair_dryer",
+          "name": "드라이기",
+          "file": "src/assets/items/100k_1m/hair_dryer.png"
+        },
+        {
+          "slug": "cat_tower",
+          "name": "고양이 캣타워",
+          "file": "src/assets/items/100k_1m/cat_tower.png"
+        }
+      ]
+    },
+    {
+      "folder": "1m_100m",
+      "name": "100만원-1억원",
+      "items": [
+        {
+          "slug": "bmw_car",
+          "name": "BMW 자동차",
+          "file": "src/assets/items/1m_100m/bmw_car.png"
+        },
+        {
+          "slug": "benz_car",
+          "name": "벤츠 자동차",
+          "file": "src/assets/items/1m_100m/benz_car.png"
+        },
+        {
+          "slug": "tesla_car",
+          "name": "테슬라 자동차",
+          "file": "src/assets/items/1m_100m/tesla_car.png"
+        },
+        {
+          "slug": "motorcycle",
+          "name": "오토바이",
+          "file": "src/assets/items/1m_100m/motorcycle.png"
+        },
+        {
+          "slug": "electric_bike",
+          "name": "전기자전거",
+          "file": "src/assets/items/1m_100m/electric_bike.png"
+        },
+        {
+          "slug": "gold_1kg",
+          "name": "금 1kg",
+          "file": "src/assets/items/1m_100m/gold_1kg.png"
+        },
+        {
+          "slug": "luxury_watch",
+          "name": "명품 시계",
+          "file": "src/assets/items/1m_100m/luxury_watch.png"
+        },
+        {
+          "slug": "officetel_deposit",
+          "name": "오피스텔 보증금",
+          "file": "src/assets/items/1m_100m/officetel_deposit.png"
+        },
+        {
+          "slug": "wedding_ring",
+          "name": "결혼반지",
+          "file": "src/assets/items/1m_100m/wedding_ring.png"
+        },
+        {
+          "slug": "wedding_dress",
+          "name": "웨딩드레스",
+          "file": "src/assets/items/1m_100m/wedding_dress.png"
+        },
+        {
+          "slug": "honeymoon",
+          "name": "신혼여행",
+          "file": "src/assets/items/1m_100m/honeymoon.png"
+        },
+        {
+          "slug": "camping_car",
+          "name": "캠핑카",
+          "file": "src/assets/items/1m_100m/camping_car.png"
+        },
+        {
+          "slug": "dog_house",
+          "name": "강아지집",
+          "file": "src/assets/items/1m_100m/dog_house.png"
+        }
+      ]
+    },
+    {
+      "folder": "over_100m",
+      "name": "1억원 이상",
+      "items": [
+        {
+          "slug": "dog_house_100",
+          "name": "강아지집 100채",
+          "file": "src/assets/items/over_100m/dog_house_100.png"
+        },
+        {
+          "slug": "apartment",
+          "name": "아파트",
+          "file": "src/assets/items/over_100m/apartment.png"
+        },
+        {
+          "slug": "han_river_view_house",
+          "name": "한강뷰 집",
+          "file": "src/assets/items/over_100m/han_river_view_house.png"
+        },
+        {
+          "slug": "jeju_land",
+          "name": "제주도 땅",
+          "file": "src/assets/items/over_100m/jeju_land.png"
+        },
+        {
+          "slug": "cow",
+          "name": "소 한 마리",
+          "file": "src/assets/items/over_100m/cow.png"
+        },
+        {
+          "slug": "horse",
+          "name": "말 한 마리",
+          "file": "src/assets/items/over_100m/horse.png"
+        },
+        {
+          "slug": "tractor",
+          "name": "트랙터",
+          "file": "src/assets/items/over_100m/tractor.png"
+        },
+        {
+          "slug": "excavator",
+          "name": "굴착기",
+          "file": "src/assets/items/over_100m/excavator.png"
+        },
+        {
+          "slug": "convenience_store_startup",
+          "name": "편의점 창업",
+          "file": "src/assets/items/over_100m/convenience_store_startup.png"
+        },
+        {
+          "slug": "franchise_startup",
+          "name": "프랜차이즈 창업",
+          "file": "src/assets/items/over_100m/franchise_startup.png"
+        },
+        {
+          "slug": "porsche_car",
+          "name": "포르쉐 자동차",
+          "file": "src/assets/items/over_100m/porsche_car.png"
+        },
+        {
+          "slug": "yacht",
+          "name": "요트",
+          "file": "src/assets/items/over_100m/yacht.png"
+        }
+      ]
+    }
+  ]
+}

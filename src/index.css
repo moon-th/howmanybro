@@ -1,0 +1,47 @@
+@import url('https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm/style.css');
+@import 'tailwindcss';
+
+:root {
+  --ink: #241d18;
+  --text: #63574d;
+  --muted: #817469;
+  --paper: #fff9ef;
+  --surface: #f6efe2;
+  --line: rgba(36, 29, 24, 0.12);
+  --line-strong: rgba(36, 29, 24, 0.2);
+  --accent: #197c5b;
+  --pixel-font: 'NeoDunggeunmo', 'Courier New', 'Apple SD Gothic Neo', 'Noto Sans KR', monospace;
+
+  color: var(--text);
+  background: #e4ebf5;
+  font-family: var(--pixel-font);
+  font-synthesis: none;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100svh;
+  margin: 0;
+}
+
+button,
+input,
+select {
+  letter-spacing: 0;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+::selection {
+  background: rgba(25, 124, 91, 0.2);
+}
