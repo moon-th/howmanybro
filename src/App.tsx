@@ -2529,13 +2529,19 @@ function App() {
             <div className="download-fallback-panel">
               <img src={downloadState.url} alt="저장할 결과 이미지 미리보기" />
               <a
-                className="download-fallback-link"
+                className="download-fallback-link download-direct-link"
                 download={downloadState.fileName}
+                href={downloadState.url}
+              >
+                다운로드 저장
+              </a>
+              <a
+                className="download-fallback-link"
                 href={downloadState.url}
                 target="_blank"
                 rel="noopener"
               >
-                새 탭으로 열기
+                이미지 보기
               </a>
             </div>
           ) : null}

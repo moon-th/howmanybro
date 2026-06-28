@@ -1071,6 +1071,14 @@
   text-decoration: none;
 }
 
+.download-direct-link {
+  width: 100%;
+  border-color: #171513;
+  background: #ffd330;
+  color: #16120f;
+  box-shadow: 3px 4px 0 rgba(23, 21, 19, 0.14);
+}
+
 .result-actions button:hover {
   transform: translateY(-2px);
   box-shadow: 4px 6px 0 rgba(23, 21, 19, 0.14);
