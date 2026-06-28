@@ -2292,6 +2292,7 @@ function App() {
   const [liveStats, setLiveStats] = useState<LiveStats>(FALLBACK_LIVE_STATS)
   const [pendingAdAction, setPendingAdAction] = useState<PendingAdAction | null>(null)
   const [copyNotice, setCopyNotice] = useState('')
+  const [allowKakaoBrowser, setAllowKakaoBrowser] = useState(false)
 
   const isResult = result !== null
   const topLossItem = liveStats.rankings.loss[0] ?? FALLBACK_LIVE_STATS.rankings.loss[0]
@@ -2304,6 +2305,18 @@ function App() {
     () => (result ? getResultLabelLines(result.item.label) : []),
     [result],
   )
+
+  useEffect(() => {
+    if (!isKakaoBrowser || !isAndroidBrowser || !externalBrowserUrl) {
+      return
+    }
+
+    const redirectTimer = window.setTimeout(() => {
+      window.location.href = externalBrowserUrl
+    }, 250)
+
+    return () => window.clearTimeout(redirectTimer)
+  }, [externalBrowserUrl, isAndroidBrowser, isKakaoBrowser])
 
   useEffect(() => {
     const hasAdSenseScript = document.querySelector(
@@ -2568,6 +2581,36 @@ function App() {
   const adBreakOverlay = pendingAdAction ? (
     <AdBreakOverlay onCancel={() => setPendingAdAction(null)} onContinue={continueAfterAdBreak} />
   ) : null
+
+  if (isKakaoBrowser && !allowKakaoBrowser) {
+    return (
+      <main className="app-screen entry-screen kakao-browser-screen">
+        <section className="kakao-browser-gate" aria-label="외부 브라우저 안내">
+          <img src={pixelAnt} alt="" />
+          <h1>카톡에서는 이미지 저장이 막힐 수 있어요</h1>
+          <p>
+            결과 이미지를 저장하려면 Chrome이나 Safari에서 열어주세요. Android는 아래 버튼으로
+            바로 열 수 있고, iPhone은 카톡 오른쪽 위 메뉴에서 외부 브라우저로 열어야 합니다.
+          </p>
+          <div className="kakao-browser-actions">
+            {isAndroidBrowser ? (
+              <a className="download-fallback-link download-direct-link" href={externalBrowserUrl}>
+                Chrome으로 열기
+              </a>
+            ) : (
+              <button type="button" onClick={copyExternalBrowserUrl}>
+                링크 복사
+              </button>
+            )}
+            <button type="button" onClick={() => setAllowKakaoBrowser(true)}>
+              카톡에서 그냥 보기
+            </button>
+          </div>
+          {copyNotice ? <em>{copyNotice}</em> : null}
+        </section>
+      </main>
+    )
+  }
 
   if (isResult && result) {
     const isLoss = result.amount < 0
