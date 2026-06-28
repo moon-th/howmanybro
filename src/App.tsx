@@ -1643,7 +1643,7 @@ const EXPORT_HEIGHT = 1152
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.replace(/\/$/, '')
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT
+const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT ?? 'ca-pub-5140966990633198'
 const ADSENSE_MAIN_SLOT = import.meta.env.VITE_ADSENSE_MAIN_SLOT
 const ADSENSE_RESULT_SLOT = import.meta.env.VITE_ADSENSE_RESULT_SLOT
 const ADSENSE_BREAK_SLOT = import.meta.env.VITE_ADSENSE_BREAK_SLOT
@@ -2306,7 +2306,11 @@ function App() {
   )
 
   useEffect(() => {
-    if (!ADSENSE_CLIENT || document.getElementById(ADSENSE_SCRIPT_ID)) {
+    const hasAdSenseScript = document.querySelector(
+      'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
+    )
+
+    if (!ADSENSE_CLIENT || document.getElementById(ADSENSE_SCRIPT_ID) || hasAdSenseScript) {
       return
     }
 
