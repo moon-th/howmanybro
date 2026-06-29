@@ -2505,13 +2505,13 @@ function App() {
     context.textAlign = 'center'
     context.textBaseline = 'middle'
     context.lineJoin = 'round'
-    context.font = '900 27px "NeoDunggeunmo", "Apple SD Gothic Neo", "Noto Sans KR", monospace'
+    context.font = '800 22px "Apple SD Gothic Neo", "Noto Sans KR", sans-serif'
     context.fillStyle = isNightBackground ? '#fff8df' : '#172732'
-    context.shadowColor = isNightBackground ? 'rgba(0, 0, 0, 0.45)' : 'rgba(0, 0, 0, 0.1)'
+    context.shadowColor = 'transparent'
     context.shadowBlur = 0
-    context.shadowOffsetX = 2
-    context.shadowOffsetY = 2
-    context.fillText('주최몇', EXPORT_WIDTH / 2, 112)
+    context.shadowOffsetX = 0
+    context.shadowOffsetY = 0
+    context.fillText('주최몇', EXPORT_WIDTH / 2, 106)
 
     const titleFontSize = getTitleFontSize(labelLines)
     context.font = `900 ${titleFontSize}px "NeoDunggeunmo", "Apple SD Gothic Neo", "Noto Sans KR", monospace`
