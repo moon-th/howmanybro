@@ -155,6 +155,17 @@ const PROFIT_CAPTIONS = [
   '내일도 가보자!',
 ]
 
+const ITEM_CAPTIONS: Record<string, { loss: string; profit: string }> = {
+  라면: {
+    loss: '면발은 다음기회에.',
+    profit: '면발이 춤을 춘다',
+  },
+  아아: {
+    loss: '아아 말고 아... 아...',
+    profit: '커피는 아이스 계좌는 나이스',
+  },
+}
+
 type ResultItem = {
   label: string
   unit: string
@@ -1956,12 +1967,14 @@ function createResult(amount: number): ResultState {
     RESULT_ITEM_SECTIONS[RESULT_ITEM_SECTIONS.length - 1]
   const affordableItems = section.items.filter((item) => item.price <= absoluteAmount)
   const fallbackItems = RESULT_ITEM_SECTIONS[0].items
+  const item = pickWeightedResultItem(affordableItems.length > 0 ? affordableItems : fallbackItems, absoluteAmount)
+  const itemCaption = ITEM_CAPTIONS[item.label]
 
   return {
     amount,
     background: pickRandom(isLoss ? LOSS_BACKGROUNDS : PROFIT_BACKGROUNDS),
-    caption: pickRandom(isLoss ? LOSS_CAPTIONS : PROFIT_CAPTIONS),
-    item: pickWeightedResultItem(affordableItems.length > 0 ? affordableItems : fallbackItems, absoluteAmount),
+    caption: itemCaption ? itemCaption[isLoss ? 'loss' : 'profit'] : pickRandom(isLoss ? LOSS_CAPTIONS : PROFIT_CAPTIONS),
+    item,
   }
 }
 
