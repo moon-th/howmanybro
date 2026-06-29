@@ -846,21 +846,32 @@
 
 .result-card-logo {
   align-self: start;
+  display: inline-grid;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  min-height: 30px;
+  border: 2px solid #172732;
+  border-radius: 5px;
+  background: #fffdf8;
   color: #172732;
-  display: inline-block;
-  min-width: 48px;
   font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  font-size: clamp(11px, 2.9vw, 13px);
-  font-weight: 800;
+  font-size: clamp(17px, 4.8vw, 24px);
+  font-weight: 900;
   line-height: 1;
   letter-spacing: 0;
-  transform: translateY(0);
+  padding: 3px 13px 4px;
+  transform: translateY(-2px);
   text-shadow: none;
+  box-shadow: 2px 2px 0 rgba(23, 21, 19, 0.18);
 }
 
 .pixel-result-card-night .result-card-logo {
+  border-color: #fff8df;
+  background: #17223f;
   color: #fff8df;
   text-shadow: none;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
 
 .pixel-result-card h1 {

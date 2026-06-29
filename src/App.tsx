@@ -2518,13 +2518,28 @@ function App() {
     context.textAlign = 'center'
     context.textBaseline = 'middle'
     context.lineJoin = 'round'
-    context.font = '800 22px "Apple SD Gothic Neo", "Noto Sans KR", sans-serif'
+    const logoBoxWidth = 212
+    const logoBoxHeight = 56
+    const logoBoxX = (EXPORT_WIDTH - logoBoxWidth) / 2
+    const logoBoxY = 64
+    context.shadowColor = isNightBackground ? 'rgba(0, 0, 0, 0.35)' : 'rgba(23, 21, 19, 0.18)'
+    context.shadowBlur = 0
+    context.shadowOffsetX = 4
+    context.shadowOffsetY = 4
+    context.fillStyle = isNightBackground ? '#17223f' : '#fffdf8'
+    context.strokeStyle = isNightBackground ? '#fff8df' : '#172732'
+    context.lineWidth = 4
+    context.beginPath()
+    context.roundRect(logoBoxX, logoBoxY, logoBoxWidth, logoBoxHeight, 10)
+    context.fill()
+    context.stroke()
+    context.font = '900 34px "Apple SD Gothic Neo", "Noto Sans KR", sans-serif'
     context.fillStyle = isNightBackground ? '#fff8df' : '#172732'
     context.shadowColor = 'transparent'
     context.shadowBlur = 0
     context.shadowOffsetX = 0
     context.shadowOffsetY = 0
-    context.fillText('주최몇', EXPORT_WIDTH / 2, 106)
+    context.fillText('주최몇', EXPORT_WIDTH / 2, logoBoxY + logoBoxHeight / 2 + 1)
 
     const titleFontSize = getTitleFontSize(labelLines)
     context.font = `900 ${titleFontSize}px "NeoDunggeunmo", "Apple SD Gothic Neo", "Noto Sans KR", monospace`
