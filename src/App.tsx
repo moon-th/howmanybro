@@ -1663,6 +1663,10 @@ function formatSignedQuantity(value: number, isLoss: boolean) {
   return `${isLoss ? '-' : '+'}${formatQuantity(value)}`
 }
 
+function formatWon(value: number) {
+  return `${formatQuantity(value)}원`
+}
+
 function getCountDensityClass(countText: string) {
   if (countText.length >= 10) {
     return 'result-count-tiny'
@@ -1965,6 +1969,29 @@ function createResult(amount: number): ResultState {
     caption: itemCaption ? itemCaption[isLoss ? 'loss' : 'profit'] : pickRandom(isLoss ? LOSS_CAPTIONS : PROFIT_CAPTIONS),
     item,
   }
+}
+
+function getComparableItems(result: ResultState) {
+  const absoluteAmount = Math.abs(result.amount)
+  const allItems = RESULT_ITEM_SECTIONS[RESULT_ITEM_SECTIONS.length - 1].items
+
+  return allItems
+    .filter((item) => item.label !== result.item.label && item.price <= absoluteAmount)
+    .map((item) => ({
+      ...item,
+      quantity: absoluteAmount / item.price,
+    }))
+    .sort((left, right) => {
+      const leftDistance = Math.abs(left.price - result.item.price)
+      const rightDistance = Math.abs(right.price - result.item.price)
+
+      if (leftDistance !== rightDistance) {
+        return leftDistance - rightDistance
+      }
+
+      return right.price - left.price
+    })
+    .slice(0, 4)
 }
 
 function loadCanvasImage(src: string) {
@@ -2601,47 +2628,105 @@ function App() {
     const isNightBackground = result.background === resultBgNight
     const countText = formatSignedQuantity(itemQuantity, isLoss)
     const countDensityClass = getCountDensityClass(countText)
+    const comparableItems = getComparableItems(result)
+    const toneLabel = isLoss ? '손실' : '수익'
 
     return (
       <main className={`app-screen result-screen result-screen-${resultTone}`} aria-live="polite">
-        <section
-          className={`pixel-result-card ${isNightBackground ? 'pixel-result-card-night' : ''}`}
-          aria-label="금액 환산 결과"
-        >
-          <img className="result-card-bg" src={result.background} alt="" />
-          <div className="result-card-content">
-            <div className="result-card-logo" aria-hidden="true">주최몇</div>
-            <h1 className={resultLabelLines.length > 1 ? 'result-title-multiline' : undefined}>
-              {resultLabelLines.map((line, index) => (
-                <span key={`${line}-${index}`}>{line}</span>
-              ))}
-            </h1>
-            <p className={`result-count ${countDensityClass}`}>
-              <strong>{countText}</strong>
-              <span>{result.item.unit}</span>
-            </p>
-            <div className="result-art" aria-hidden="true">
-              <img className="result-item-image" src={result.item.icon} alt="" />
-            </div>
-            <p className="result-caption-bubble">{result.caption}</p>
-          </div>
-        </section>
+        <div className="result-page-shell">
+          <section className="result-hero-panel" aria-label="금액 환산 결과">
+            <section
+              className={`pixel-result-card ${isNightBackground ? 'pixel-result-card-night' : ''}`}
+            >
+              <img className="result-card-bg" src={result.background} alt="" />
+              <div className="result-card-content">
+                <div className="result-card-logo" aria-hidden="true">주최몇</div>
+                <h1 className={resultLabelLines.length > 1 ? 'result-title-multiline' : undefined}>
+                  {resultLabelLines.map((line, index) => (
+                    <span key={`${line}-${index}`}>{line}</span>
+                  ))}
+                </h1>
+                <p className={`result-count ${countDensityClass}`}>
+                  <strong>{countText}</strong>
+                  <span>{result.item.unit}</span>
+                </p>
+                <div className="result-art" aria-hidden="true">
+                  <img className="result-item-image" src={result.item.icon} alt="" />
+                </div>
+                <p className="result-caption-bubble">{result.caption}</p>
+              </div>
+            </section>
 
-        <div className="result-actions">
-          <button type="button" onClick={handleDownloadResult}>
-            {downloadState ? '이미지 다시 만들기' : '이미지 다운로드'}
-          </button>
-          {downloadState && !isKakaoBrowser ? (
-            <button type="button" className="download-primary-action" onClick={handleSaveGeneratedImage}>
-              {isIosBrowser ? '공유로 사진 저장' : '공유/저장하기'}
-            </button>
-          ) : null}
-          <button type="button" onClick={rerollResult}>
-            이미지 다시 뽑기
-          </button>
-          <button type="button" onClick={resetResult}>
-            다른 금액 입력
-          </button>
+            <div className="result-actions">
+              <button type="button" onClick={handleDownloadResult}>
+                {downloadState ? '이미지 다시 만들기' : '이미지 다운로드'}
+              </button>
+              {downloadState && !isKakaoBrowser ? (
+                <button type="button" className="download-primary-action" onClick={handleSaveGeneratedImage}>
+                  {isIosBrowser ? '공유로 사진 저장' : '공유/저장하기'}
+                </button>
+              ) : null}
+              <button type="button" onClick={rerollResult}>
+                이미지 다시 뽑기
+              </button>
+              <button type="button" onClick={resetResult}>
+                다른 금액 입력
+              </button>
+            </div>
+          </section>
+
+          <section className="result-context-panel" aria-label="결과 상세">
+            <div className="result-summary-block">
+              <span className={`result-tone-badge result-tone-badge-${resultTone}`}>{toneLabel}</span>
+              <h2>{formatWon(absoluteAmount)}의 정체</h2>
+              <p>
+                {result.item.label} 기준가 {formatWon(result.item.price)}로 나누면
+                {' '}
+                <strong>{countText}{result.item.unit}</strong>
+                이 나옵니다.
+              </p>
+              <dl className="result-math-list">
+                <div>
+                  <dt>입력금액</dt>
+                  <dd>{isLoss ? '-' : '+'}{formatWon(absoluteAmount)}</dd>
+                </div>
+                <div>
+                  <dt>기준가격</dt>
+                  <dd>{formatWon(result.item.price)}</dd>
+                </div>
+                <div>
+                  <dt>계산식</dt>
+                  <dd>{formatWon(absoluteAmount)} ÷ {formatWon(result.item.price)}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="result-save-guide">
+              <h2>공유용 이미지는 따로 만들어요</h2>
+              <p>
+                위 카드 규격은 그대로 유지되고, 저장 버튼을 누르면 카드만 PNG로 생성됩니다.
+              </p>
+            </div>
+          </section>
+
+          <section className="result-related-panel" aria-label="비슷한 금액대 아이템">
+            <div>
+              <span>같은 금액이면</span>
+              <h2>이런 것도 나와요</h2>
+            </div>
+            <ul>
+              {comparableItems.map((item) => (
+                <li key={item.label}>
+                  <img src={item.icon} alt="" />
+                  <div>
+                    <strong>{item.label}</strong>
+                    <span>{formatSignedQuantity(item.quantity, isLoss)}{item.unit}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           {isKakaoBrowser ? (
             <div className="in-app-browser-panel" role="status">
               <strong>카톡 브라우저에서는 저장이 막힐 수 있어요.</strong>
