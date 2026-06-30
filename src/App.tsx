@@ -1580,15 +1580,6 @@ type ResultState = {
   item: ResultItem
 }
 
-type PendingAdAction =
-  | {
-      amount: number
-      kind: 'submit'
-    }
-  | {
-      kind: 'reroll'
-    }
-
 type DownloadState = {
   blob: Blob
   dataUrl: string
@@ -1656,8 +1647,6 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.replace(/\/$/, '')
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT ?? 'ca-pub-5140966990633198'
 const ADSENSE_MAIN_SLOT = import.meta.env.VITE_ADSENSE_MAIN_SLOT
-const ADSENSE_RESULT_SLOT = import.meta.env.VITE_ADSENSE_RESULT_SLOT
-const ADSENSE_BREAK_SLOT = import.meta.env.VITE_ADSENSE_BREAK_SLOT
 const ADSENSE_SCRIPT_ID = 'google-adsense-script'
 const CONTACT_EMAIL = 'contact@gmail.com'
 
@@ -2280,41 +2269,12 @@ function AdSenseUnit({
   )
 }
 
-function AdBreakOverlay({
-  onCancel,
-  onContinue,
-}: {
-  onCancel: () => void
-  onContinue: () => void
-}) {
-  return (
-    <div className="ad-break-backdrop" role="dialog" aria-modal="true" aria-label="광고">
-      <section className="ad-break-panel">
-        <div className="ad-break-header">
-          <span>AD</span>
-          <strong>잠깐 광고 보고 갈게요</strong>
-        </div>
-        <AdSenseUnit className="ad-break-slot" label="중간 광고" slot={ADSENSE_BREAK_SLOT} />
-        <div className="ad-break-actions">
-          <button type="button" onClick={onContinue}>
-            계속하기
-          </button>
-          <button type="button" onClick={onCancel}>
-            닫기
-          </button>
-        </div>
-      </section>
-    </div>
-  )
-}
-
 function App() {
   const [amount, setAmount] = useState('')
   const [amountError, setAmountError] = useState('')
   const [result, setResult] = useState<ResultState | null>(null)
   const [downloadState, setDownloadState] = useState<DownloadState | null>(null)
   const [liveStats, setLiveStats] = useState<LiveStats>(FALLBACK_LIVE_STATS)
-  const [pendingAdAction, setPendingAdAction] = useState<PendingAdAction | null>(null)
   const [copyNotice, setCopyNotice] = useState('')
   const [allowKakaoBrowser, setAllowKakaoBrowser] = useState(false)
 
@@ -2416,8 +2376,7 @@ function App() {
 
     const signedAmount = submitTone === 'loss' ? -Math.abs(parsedAmount) : Math.abs(parsedAmount)
 
-    setAmountError('')
-    setPendingAdAction({ amount: signedAmount, kind: 'submit' })
+    createAndSyncResult(signedAmount)
   }
 
   function performRerollResult() {
@@ -2432,27 +2391,6 @@ function App() {
   }
 
   function rerollResult() {
-    if (!result) {
-      return
-    }
-
-    setPendingAdAction({ kind: 'reroll' })
-  }
-
-  function continueAfterAdBreak() {
-    const nextAction = pendingAdAction
-
-    setPendingAdAction(null)
-
-    if (!nextAction) {
-      return
-    }
-
-    if (nextAction.kind === 'submit') {
-      createAndSyncResult(nextAction.amount)
-      return
-    }
-
     performRerollResult()
   }
 
@@ -2625,10 +2563,6 @@ function App() {
     setCopyNotice(copied ? '주소를 복사했어요.' : '주소 복사가 막혔어요. 오른쪽 위 메뉴를 눌러 외부 브라우저로 열어주세요.')
   }
 
-  const adBreakOverlay = pendingAdAction ? (
-    <AdBreakOverlay onCancel={() => setPendingAdAction(null)} onContinue={continueAfterAdBreak} />
-  ) : null
-
   if (isKakaoBrowser && !allowKakaoBrowser) {
     return (
       <main className="app-screen entry-screen kakao-browser-screen">
@@ -2693,8 +2627,6 @@ function App() {
           </div>
         </section>
 
-        <AdSenseUnit className="result-ad" label="결과 화면 광고" slot={ADSENSE_RESULT_SLOT} />
-
         <div className="result-actions">
           <button type="button" onClick={handleDownloadResult}>
             {downloadState ? '이미지 다시 만들기' : '이미지 다운로드'}
@@ -2754,7 +2686,6 @@ function App() {
             </div>
           ) : null}
         </div>
-        {adBreakOverlay}
       </main>
     )
   }
@@ -2903,6 +2834,44 @@ function App() {
         <p>🎁 이 외에도 더 많은 아이템이 준비되어 있어요!</p>
       </section>
 
+      <section className="policy-content" aria-label="서비스 안내">
+        <article>
+          <h2>주최몇은 어떤 서비스인가요?</h2>
+          <p>
+            주최몇은 손실이나 수익 금액을 라면, 커피, 강아지집, 명품 가방 같은 친숙한 물건으로
+            바꿔 보여주는 재미용 계산기입니다. 금액의 크기를 숫자만으로 보는 대신 “이 정도면
+            무엇을 몇 개 살 수 있었을까?”라는 방식으로 가볍게 비교할 수 있게 만들었습니다.
+          </p>
+        </article>
+        <article>
+          <h2>계산 기준</h2>
+          <p>
+            사용자가 입력한 금액의 절댓값을 아이템별 기준 가격으로 나누어 수량을 계산합니다.
+            아이템은 가격대별로 나뉘며, 같은 가격대 안에서 무작위로 선택됩니다. 실제 판매가,
+            지역, 시점, 할인 여부에 따라 가격은 달라질 수 있으므로 결과는 참고용입니다.
+          </p>
+        </article>
+        <article>
+          <h2>데이터와 개인정보</h2>
+          <p>
+            통계에는 입력 금액, 선택된 아이템, 손실/수익 구분, 계산 수량만 익명 이벤트로
+            반영됩니다. 이름, 연락처, 증권 계좌, 보유 종목 같은 개인 금융 정보는 입력받지
+            않습니다. 입력 데이터는 오늘의 손실/수익 집계와 많이 나온 아이템 순위를 만드는 데
+            사용됩니다.
+          </p>
+        </article>
+        <article>
+          <h2>광고와 문의</h2>
+          <p>
+            사이트 운영비를 충당하기 위해 본문 사이에 광고가 표시될 수 있습니다. 광고는 결과
+            생성이나 저장을 막는 방식으로 배치하지 않으며, 협업이나 문의는
+            {' '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            로 연락할 수 있습니다.
+          </p>
+        </article>
+      </section>
+
       <footer className="main-footer">
         <div>
           <h2>오늘의 명언 ✦</h2>
@@ -2920,7 +2889,6 @@ function App() {
           </p>
         </div>
       </footer>
-      {adBreakOverlay}
     </main>
   )
 }
